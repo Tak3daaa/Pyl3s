@@ -1,7 +1,11 @@
 import os
 import shutil
+from fpdf import FPDF
+# import chardet
+# from reportlab.lib.pagesizes import letter
+# from reportlab.pdfgen import canvas
 
-extensao = ""
+extensao = ".txt"
         
 def criar_arquivo_txt(nome): 
     if os.path.exists(nome + extensao):
@@ -11,7 +15,7 @@ def criar_arquivo_txt(nome):
         return True
     else:
         with open(nome + extensao, "w", encoding="utf-8") as arq:
-            conteudo = input('Fale o que quiser: ')
+            conteudo = input('-> ')
             arq.write(conteudo + " ")
         return False
     
@@ -29,7 +33,7 @@ def abrir_arquivo_txt(nome):
 def escrever_arquivo_txt(nome):
     if os.path.exists(nome + extensao):
         with open(nome + extensao, "a", encoding="utf-8") as arq:
-            conteudo = input('Fale o que quiser a mais: ')
+            conteudo = input('-> ')
             arq.write(conteudo + " ")
         return True
     else:
@@ -38,10 +42,10 @@ def escrever_arquivo_txt(nome):
 
 def listar_diretorio(diretorio, extensao):
     #raiz - dirs - arquivos
-    for _ , _ , arquivos in os.walk(diretorio):
+    for raiz , _ , arquivos in os.walk(diretorio):
         for arquivo in arquivos:
             if arquivo.endswith(extensao):
-                print(os.path.join(arquivo))
+                print(os.path.join(raiz, arquivo))
 
 def diretorio_atual():
     return os.getcwd()
@@ -107,13 +111,71 @@ def deletar_diretorio(nome_diretorio):
         print(f"Erro ao tentar remover o diretório '{nome_diretorio}': {e}")
         return False
     
-# Example usage:
+def tamanho_diretorio_kb(caminho):
+    total = 0
+    # total_arq = 0
+    # total_dir = 0
+    for caminho_atual, sub_dir, arquivos in os.walk(caminho):
+        for a in arquivos:
+            aux = os.path.join(caminho_atual, a)
+            total += os.path.getsize(aux)
+            # total_arq = total_arq + 1
+        for sub in sub_dir:
+            aux_2 = os.path.join(caminho_atual, sub)
+            # total_dir = 1 + total_dir 
+            total += tamanho_diretorio_kb(aux_2)
+            
+    return total/1024
 
-diretorio = diretorio_atual()
+def tamanho_arquivo_kb(caminho, nome_arq):
+    return os.path.getsize(caminho + '\\' + nome_arq)
+
+# def palavra_chave(arquivo, palavra):
+#     with open(arquivo, 'r', encoding='utf-8') as file:
+#         for numero_linha, linha in enumerate(file, 1):
+#             if palavra in linha:
+#                 return numero_linha, palavra
+def palavra_chave(arquivo, palavra):
+    ocorrencias = []
+
+    with open(arquivo, 'r', encoding='utf-8') as file:
+        for numero_linha, linha in enumerate(file, 1):
+            if palavra in linha:
+                ocorrencias.append((numero_linha, linha.strip()))
+
+    return ocorrencias
+
+def contar_caracteres(arquivo):
+    with open(arquivo, 'r', encoding='utf-8') as file:
+        conteudo = file.read()
+        quantidade_caracteres = len(conteudo)
+    
+    return quantidade_caracteres
 
 
-deletar_diretorio('teste')
+def txt_pdf(arquivo):
+    pdf = FPDF()
+    pdf.add_page()
+    file = open(arquivo, 'r')
+    for texto in file:
+        if len(texto) <= 20:
+            pdf.set_font("Arial", "B", size=18)
+            pdf.cell(w=200,h=10,txt=texto,ln=1,align='C')
+        else:
+            pdf.set_font("Arial", size=15)
+            pdf.cell(w=0,h=10,txt=texto,align='L')
+    pdf.output('saida.pdf')
+    
+txt_pdf('teste2.txt')
+# diretorio = diretorio_atual()
+# print(contar_caracteres('teste3.txt'))
+# print(tamanho_diretorio_kb(diretorio_atual()))
+# print(tamanho_arquivo_kb(diretorio_atual(), 'teste2.txt'))
+# deletar_diretorio('teste')
 # deletar_arquivo('teste.txt')
+# palavra = palavra_chave('teste2.txt', 'amor')
+# palavra = palavra_chave('teste2.txt', 'amor')
+# print(palavra)
 
 # if copiar_diretorio_completo(diretorio, r'C:\Users\nyddo\OneDrive\Área de Trabalho\Faculdade\POOII\teste') is True:
 #     print('Arquivos copiados com sucesso!')

@@ -328,13 +328,10 @@ def tamanho_diretorio_kb(caminho):
             aux = os.path.join(caminho_atual, a)
             total += os.path.getsize(aux)
             total_arq += 1
-
         for sub in sub_dir:
             aux_2 = os.path.join(caminho_atual, sub)
-            subdir_size, subdir_arq, subdir_dir = tamanho_diretorio_kb(aux_2)
-            total_dir += 1 + subdir_dir
-            total_arq += subdir_arq
-            total += subdir_size
+            total_dir += 1 
+            tamanho_diretorio_kb(aux_2)
     return total/1024, total_arq, total_dir
 
 

@@ -55,7 +55,7 @@ def abrir_arquivo_txt(nome):
 
 
 def escrever_arquivo_txt(nome):
-    """Função responsável por escrever em um arquivo .txt, se ele existir
+    """Função responsável por escrever em um arquivo .txt, se ele existir.
 
     Parameters
     ----------
@@ -124,7 +124,7 @@ def abrir_arquivo_bin(nome):
 
 
 def escrever_arquivo_bin(nome):
-    """Função responsável por escrever em um arquivo .bin, se ele existir
+    """Função responsável por escrever em um arquivo .bin, se ele existir.
 
     Parameters
     ----------
@@ -327,12 +327,13 @@ def tamanho_diretorio_kb(caminho):
         for a in arquivos:
             aux = os.path.join(caminho_atual, a)
             total += os.path.getsize(aux)
-            total_arq = total_arq + 1
+            total_arq += 1
         for sub in sub_dir:
             aux_2 = os.path.join(caminho_atual, sub)
-            total_dir = 1 + total_dir
-            total += tamanho_diretorio_kb(aux_2)
+            total_dir += 1 
+            tamanho_diretorio_kb(aux_2)
     return total/1024, total_arq, total_dir
+
 
 
 def tamanho_arquivo_kb(caminho, nome_arq):
@@ -350,7 +351,7 @@ def tamanho_arquivo_kb(caminho, nome_arq):
     float
         O tamanho do arquivo em kilobytes.
     """
-    return os.path.getsize(caminho + '\\' + nome_arq)
+    return os.path.getsize(caminho + '\\' + nome_arq)/1024
 
 
 def palavra_chave(arquivo, palavra):
@@ -531,3 +532,4 @@ def bin_to_txt(nome_arquivo_bin, nome_arquivo_txt):
         return True
     else:
         return False
+

@@ -55,7 +55,7 @@ def abrir_arquivo_txt(nome):
 
 
 def escrever_arquivo_txt(nome):
-    """Função responsável por escrever em um arquivo .txt, se ele existir. Caso contrário ele cria o arquivo
+    """Função responsável por escrever em um arquivo .txt, se ele existir.
 
     Parameters
     ----------
@@ -73,9 +73,6 @@ def escrever_arquivo_txt(nome):
             arq.write(conteudo + " ")
         return True
     else:
-        with open(nome + '.txt', "w", encoding="utf-8") as arq:
-            conteudo = input('-> ')
-            arq.write(conteudo + " ")
         return False
 
 
@@ -127,7 +124,7 @@ def abrir_arquivo_bin(nome):
 
 
 def escrever_arquivo_bin(nome):
-    """Função responsável por escrever em um arquivo .bin, se ele existir. Caso contrário ele cria o arquivo
+    """Função responsável por escrever em um arquivo .bin, se ele existir.
 
     Parameters
     ----------
@@ -145,9 +142,6 @@ def escrever_arquivo_bin(nome):
             arq.write(pickle.dumps(conteudo))
         return True
     else:
-        with open(nome + '.bin', "wb") as arq:
-            conteudo = input('-> ')
-            arq.write(pickle.dumps(conteudo))
         return False
 
 
